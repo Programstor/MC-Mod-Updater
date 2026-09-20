@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MC Mod Updater - Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { max-width: 420px; width: 100%; }
+    .login-box h1 { font-size: 1.3rem; margin-bottom: 6px; }
+    .login-box .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; }
+    .login-box label { display: block; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 4px; margin-top: 12px; }
+    .login-box input { width: 100%; background: #121317; color: #e2e8f0; border: 1px solid #2e303b; border-radius: 6px; padding: 9px 12px; outline: none; }
+    .login-box .error-box { background: #2a1414; border: 1px solid #7f1d1d; color: #fca5a5; padding: 10px 12px; border-radius: 6px; font-size: 0.82rem; margin-top: 14px; }
+    .login-box .btn { width: 100%; margin-top: 18px; padding: 10px; }
+    .login-box .hint { color: var(--text-muted); font-size: 0.75rem; margin-top: 16px; line-height: 1.5; }
+    .login-box .hint code { background: #1a1b20; padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="panel-box login-box">
+    <h1>MC Mod Updater</h1>
+    <div class="subtitle">Sign in with a PufferPanel API client</div>
+
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="client_id">Client ID</label>
+      <input type="text" id="client_id" name="client_id" autocomplete="off" required>
+
+      <label for="client_secret">Client Secret</label>
+      <input type="password" id="client_secret" name="client_secret" required>
+
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+
+    {% if error %}
+    <div class="error-box">{{ error }}</div>
+    {% endif %}
+
+    <div class="hint">
+      Don't have an API client? In PufferPanel, open your profile (top right) →
+      <strong>OAuth2 Clients</strong> tab → Create a new OAuth2 Client
+      <strong>Name and Description don't matter here</strong> then paste its ID and secret here.
+      Access to the mod updater is only granted for servers that client can
+      actually edit files on, so contact your admins for access!
+    </div>
+  </div>
+</body>
+</html>

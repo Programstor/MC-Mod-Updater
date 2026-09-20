@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MC Mod Updater</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+</head>
+<body>
+  <div class="app-container">
+    <div class="instance-tabs-wrapper">
+      <div class="instance-tabs" id="instance-tabs"></div>
+    </div>
+
+    <header>
+      <h1 id="instance-heading">Mods</h1>
+      <div class="btn-group">
+        <button id="btn-check" class="btn btn-primary" onclick="startCheckProgress()">Check</button>
+        <button id="btn-update-all" class="btn btn-success" disabled onclick="updateAllMods()">Update All</button>
+        <form method="POST" action="{{ url_for('logout') }}" style="margin:0;">
+          <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+      </div>
+    </header>
+
+    <div id="progress-container" class="progress-container hidden"><div id="progress-bar" class="progress-bar"></div></div>
+
+    <div class="panel-box">
+      <div class="panel-header"><h3>Discord Announcement Draft</h3><span id="webhook-status" class="webhook-status"></span></div>
+      <textarea id="webhook-textarea" rows="2" placeholder="Updates draft..." oninput="autoExpandTextarea()"></textarea>
+      <div class="webhook-controls">
+        <button class="btn btn-danger" onclick="clearWebhookBox()">Clear</button>
+        <button class="btn btn-primary" id="btn-send-webhook" disabled onclick="sendWebhookMessage()">Send to Discord</button>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-header"><h3>Search & Add Mods from Modrinth</h3></div>
+      <div class="search-input-wrapper">
+        <input type="text" id="search-input" class="search-input" placeholder="Check mods first" disabled oninput="handleSearchInput()" onkeydown="if(event.key==='Enter') searchModrinth()">
+        <button id="btn-search" class="btn btn-primary" disabled onclick="searchModrinth()">Search</button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+
+    <div class="mods-list" id="mods-list">
+      <div class="empty-msg">Select an instance and click <strong>Check</strong> to load and scan mods.</div>
+    </div>
+  </div>
+
+  <script>
+    // request.script_root reflects SCRIPT_NAME, which ProxyFix derives from
+    // Caddy's X-Forwarded-Prefix header - "/updater" when proxied, "" when
+    // running standalone with nothing in front. app.js reads this to build
+    // every same-origin API/asset URL correctly either way.
+    window.APP_BASE = "{{ request.script_root }}";
+  </script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
